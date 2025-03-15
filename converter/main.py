@@ -1,4 +1,8 @@
 import customtkinter
+from tkinter import ttk
+from tkinter import filedialog
+import tkinter
+from converter import convertimage
 
 popup = None
 textbox = None
@@ -33,17 +37,31 @@ def on_popup_close_with_text():
     if popup is not None and textbox is not None:
         # Print the textbox content before closing
         text_content = textbox.get("1.0", "end").strip()
+        imagelocationsfile = open("converter/Files.meme", "w")
+        imagelocationsfile.write(text_content)
+        imagelocationsfile.close()
         print("Textbox content:", text_content)
         popup.destroy()
         popup = None
         textbox = text_content
 
+def button_convert():
+    convertimage(open_file(), getsavelocation())
+
+def open_file():
+    filetypes = [("Image Files", "*.png *.jpg")]
+    return filedialog.askopenfilename(filetypes = filetypes)
+
+def getsavelocation():
+    filetypes = [("Bitmap File", "*.bmp")]
+    return filedialog.asksaveasfilename(filetypes = filetypes)
+
 app = customtkinter.CTk()
 app.title("Image Downgrader")
-app.geometry("400x150")
+app.geometry("400x100")
 
 app.grid_columnconfigure(0, weight=1)
-button = customtkinter.CTkButton(app, text="Add Image", command=button_addimage)
+button = customtkinter.CTkButton(app, text="Convert Image", command=button_convert)
 button.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 
 app.mainloop()

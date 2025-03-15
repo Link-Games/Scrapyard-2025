@@ -1,10 +1,8 @@
 from PIL import Image
 
-images = ["MOUGGER", "What She Sees VS What I See"]
-i = 0
-while i < len(images):
+def convertimage(filepath, savepath):
     # Open the image
-    image = Image.open("converter/input/" + images[i] + ".png")
+    image = Image.open(filepath)
 
     # Convert the image to RGB mode if it’s not already
     image = image.convert("RGB")
@@ -16,5 +14,4 @@ while i < len(images):
     quantized_image = resized_image.quantize(colors=256, method=Image.Quantize.MEDIANCUT)
 
     # Save the result as BMP
-    quantized_image.save("converter/output/" + images[i] + ".bmp")
-    i += 1
+    quantized_image.save(savepath)

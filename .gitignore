@@ -1,2 +1,5 @@
 #Shrunked images
 output/
+
+#Python Bullshit
+__pycache__/
