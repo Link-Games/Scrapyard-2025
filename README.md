@@ -3,9 +3,7 @@
 ### Depencencies:<br>
 Python 3.13.2:<br>
 [Python Downloads](https://www.python.org/downloads/) <br>
-Custom TKInter:<br>
-`pip install customtkinter`<br>
-python-resize-image:<br>
-`pip install python-resize-image`
+Custom TKInter, python-resize-image, Pillow, numpy<br>
+`pip install customtkinter python-resize-image Pillow numpy`<br>
 ### How to run:<br>
 `python converter/main.py`
