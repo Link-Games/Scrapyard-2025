@@ -1,20 +1,49 @@
-from PIL import Image
+import customtkinter
 
-images = ["MOUGGER", "What She Sees VS What I See"]
-i = 0
-while i < len(images):
-    # Open the image
-    image = Image.open("converter/input/" + images[i] + ".png")
+popup = None
+textbox = None
 
-    # Convert the image to RGB mode if it’s not already
-    image = image.convert("RGB")
+def button_addimage():
+    global popup, textbox
+    if popup is None or not popup.winfo_exists():
+        popup = customtkinter.CTkToplevel(app)
+        popup.title("Text Input")
+        popup.geometry("300x250")
+        popup.attributes('-topmost', True)
+        
+        screen_width = app.winfo_screenwidth()
+        popup_width = 300
+        popup_x = (screen_width - popup_width) // 2
+        popup_y = 20
+        popup.geometry(f"300x250+{popup_x}+{popup_y}")
+        
+        textbox = customtkinter.CTkTextbox(popup, width=250, height=150)
+        textbox.pack(padx=20, pady=(20, 10))
+        
+        done_button = customtkinter.CTkButton(popup, text="Done", command=lambda: on_popup_close_with_text())
+        done_button.pack(pady=10)
+        
+        popup.protocol("WM_DELETE_WINDOW", lambda: on_popup_close_with_text())
+        print("button Add Image pressed")
+    else:
+        print("Popup already exists")
 
-    # Resize the image to 320x200 pixels
-    resized_image = image.resize((320, 200), Image.Resampling.LANCZOS)
+def on_popup_close_with_text():
+    global popup, textbox
+    if popup is not None and textbox is not None:
+        # Print the textbox content before closing
+        text_content = textbox.get("1.0", "end").strip()
+        print("Textbox content:", text_content)
+        popup.destroy()
+        popup = None
+        textbox = text_content
 
-    # Reduce the image to 256 colors (outputs in "P" mode)
-    quantized_image = resized_image.quantize(colors=256, method=Image.Quantize.MEDIANCUT)
+app = customtkinter.CTk()
+app.title("Image Downgrader")
+app.geometry("400x150")
 
-    # Save the result as PNG
-    quantized_image.save("converter/output/" + images[i] + ".bmp", optimize=True)
-    i+=1
+app.grid_columnconfigure(0, weight=1)
+button = customtkinter.CTkButton(app, text="Add Image", command=button_addimage)
+button.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
+
+app.mainloop()
