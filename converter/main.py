@@ -62,11 +62,7 @@ app.title("Image Downgrader")
 app.geometry("400x100")
 
 # Set the window icon
-try:
-    app.iconbitmap("converter/Icon.ico")
-    print("ICO set")
-except Exception as e:
-    print(f"Icon error: {e}")
+app.iconbitmap("converter/Icon.ico")
 
 # Configure grid and add button
 app.grid_columnconfigure(0, weight=1)

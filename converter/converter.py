@@ -14,4 +14,7 @@ def convertimage(filepath, savepath):
     quantized_image = resized_image.quantize(colors=256, method=Image.Quantize.MEDIANCUT)
 
     # Save the result as BMP
-    quantized_image.save(savepath)
+    if not savepath.lower().endswith(".bmp"):
+        quantized_image.save(savepath + ".bmp")
+    else:
+        quantized_image.save(savepath)
