@@ -1,5 +1,5 @@
 # Scrapyard-2025
-##Depencencies:
+##Depencencies:  
 Custom TKInter  
 `pip install customtkinter`  
 python-resize-image
