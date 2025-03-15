@@ -1,7 +1,8 @@
 import customtkinter
+import tkinter
 from tkinter import ttk
 from tkinter import filedialog
-import tkinter
+import os
 from converter import convertimage
 
 popup = None
@@ -35,7 +36,6 @@ def button_addimage():
 def on_popup_close_with_text():
     global popup, textbox
     if popup is not None and textbox is not None:
-        # Print the textbox content before closing
         text_content = textbox.get("1.0", "end").strip()
         imagelocationsfile = open("converter/Files.meme", "w")
         imagelocationsfile.write(text_content)
@@ -50,18 +50,28 @@ def button_convert():
 
 def open_file():
     filetypes = [("Image Files", "*.png *.jpg")]
-    return filedialog.askopenfilename(filetypes = filetypes)
+    return filedialog.askopenfilename(filetypes=filetypes)
 
 def getsavelocation():
     filetypes = [("Bitmap File", "*.bmp")]
-    return filedialog.asksaveasfilename(filetypes = filetypes)
+    return filedialog.asksaveasfilename(filetypes=filetypes)
 
+# Create the main window
 app = customtkinter.CTk()
 app.title("Image Downgrader")
 app.geometry("400x100")
 
+# Set the window icon
+try:
+    app.iconbitmap("converter/Icon.ico")
+    print("ICO set")
+except Exception as e:
+    print(f"Icon error: {e}")
+
+# Configure grid and add button
 app.grid_columnconfigure(0, weight=1)
 button = customtkinter.CTkButton(app, text="Convert Image", command=button_convert)
 button.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 
+# Start the application
 app.mainloop()
