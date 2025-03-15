@@ -12,9 +12,9 @@ while i < len(images):
     # Resize the image to 320x200 pixels
     resized_image = image.resize((320, 200), Image.Resampling.LANCZOS)
 
-    # Reduce the image to 256 colors (outputs in "P" mode)
+    # Reduce the image to 16 colors (outputs in "P" mode)
     quantized_image = resized_image.quantize(colors=256, method=Image.Quantize.MEDIANCUT)
 
-    # Save the result as PNG
-    quantized_image.save("converter/output/" + images[i] + ".bmp", optimize=True)
-    i+=1
+    # Save the result as BMP
+    quantized_image.save("converter/output/" + images[i] + ".bmp")
+    i += 1
