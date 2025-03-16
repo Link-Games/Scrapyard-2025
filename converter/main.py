@@ -162,38 +162,41 @@ def getsavelocationRAW(initial_file):
     filetypes = [("RAW Files", "*.raw")]
     return filedialog.asksaveasfilename(filetypes=filetypes, initialfile=initial_file)
 
+import subprocess
+
 def compile_binary():
-    print("GO AWAy!!!! NOT IMPLEMENtED YETTTT")
-    import os
-    from tkinter import filedialog
-
     # Define file type filters
-    filetypesasm = [("Bootloader source", "*.asm *.s")]
     filetypesraw = [("Raw image", "*.raw")]
-
-    # Get bootloader file
-    bootloader = filedialog.askopenfilename(filetypes=filetypesasm)
-    if not bootloader:
-        print("No bootloader file selected")
-        exit(1)
 
     # Get raw image file
     rawimage = filedialog.askopenfilename(filetypes=filetypesraw)
     if not rawimage:
         print("No raw image file selected")
         exit(1)
+    rawimage = os.path.normpath(rawimage)
+    print(f"Selected raw image: {rawimage}")
+    if not os.path.exists(rawimage):
+        print(f"Error: Raw image file not found at {rawimage}")
+        exit(1)
 
-    # Compile the bootloader with proper spacing and error checking
-    command = f"nasm -f bin \"{bootloader}\" -o Loader.bin"
-    result = os.system(command)
+    # Ensure Loader.bin exists in the current directory
+    loader_path = os.path.abspath("./Loader.bin")
+    print(f"Loader path: {loader_path}")
+    if not os.path.exists(loader_path):
+        print(f"Error: Loader.bin not found at {loader_path}")
+        exit(1)
 
-    command = f"copy /b Loader.bin+\"{rawimage}\" MemeOs.bin"
-    result = os.system(command)
-
-    if result != 0:
-        print(f"Compilation failed with exit code {result}")
+    # Use subprocess instead of os.system
+    command = f'copy /b "{loader_path}"+"{rawimage}" "MemeOs.bin"'
+    print(f"Executing: {command}")
+    try:
+        result = subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(e.stdout)
+        print(f"Compilation failed with exit code {e.returncode}")
     else:
-        print("Bootloader compiled successfully")
+        print("MemeOs.bin compiled successfully")
 
 def run_binary():
     filetypesbin = [("Compiled Binary", "*.bin")]
