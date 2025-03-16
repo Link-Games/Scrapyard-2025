@@ -20,3 +20,7 @@ Press "Compile Image + Source To Binary" and choose a .raw file to include with 
 Optional: Press "Run MemeOS In QEMU" to run MemeOS in an emulator
 ## Run On Real Hardware
 Take MemeOS.img and burn it to a USB using [Rufus](https://rufus.ie/en/)
+
+# Credits  
+Benjamin Zdunich  
+Justin Wendt
