@@ -59,11 +59,23 @@ AAABAAkAEBAAAAEAIABoBAAAlgAAABgYAAABACAAiAkAAP4EAAAgIAAAAQAgAKgQAACGDgAAMDAAAAEA
 
 # Create temporary icon file from Base64
 def create_icon_file():
-    icon_data = base64.b64decode(ICON_BASE64)
-    temp_file = tempfile.NamedTemporaryFile(suffix='.ico', delete=False)
-    temp_file.write(icon_data)
-    temp_file.close()
-    return temp_file.name
+    try:
+        # Decode Base64 data
+        icon_data = base64.b64decode(ICON_BASE64)
+        print("Base64 decoded successfully. Data length:", len(icon_data))
+        
+        # Create temporary file
+        temp_file = tempfile.NamedTemporaryFile(suffix='.ico', delete=False)
+        temp_file.write(icon_data)
+        temp_file.close()
+        print("Temporary file created at:", temp_file.name)
+        return temp_file.name
+    except base64.binascii.Error as e:
+        print(f"Base64 decoding failed: {e}")
+        return None
+    except Exception as e:
+        print(f"Error creating temporary file: {e}")
+        return None
 
 def load_raw_image(filepath, width=320, height=200):
     """Load a 320x200 8bpp raw image and convert to RGB using VGA palette."""
