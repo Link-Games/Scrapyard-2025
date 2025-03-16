@@ -9,14 +9,13 @@ import base64
 import tempfile
 from icon_base64 import ICON_BASE64
 from palette import VGA_PALETTE
+import subprocess
 
 # Window dimensions for viewer
 WIDTH, HEIGHT = 320, 200
 SCALE = 2
 WINDOW_WIDTH = WIDTH * SCALE
 WINDOW_HEIGHT = HEIGHT * SCALE
-
-
 
 # Create temporary icon file from Base64
 def create_icon_file():
@@ -123,9 +122,8 @@ def getsavelocationRAW(initial_file):
     filetypes = [("RAW Files", "*.raw")]
     return filedialog.asksaveasfilename(filetypes=filetypes, initialfile=initial_file)
 
-import subprocess
-
 def compile_binary():
+    """Compile Loader.bin and a raw image into MemeOs.bin."""
     # Define file type filters
     filetypesraw = [("Raw image", "*.raw")]
 
@@ -133,51 +131,56 @@ def compile_binary():
     rawimage = filedialog.askopenfilename(filetypes=filetypesraw)
     if not rawimage:
         print("No raw image file selected")
-        exit(1)
+        return
+    
     rawimage = os.path.normpath(rawimage)
     print(f"Selected raw image: {rawimage}")
     if not os.path.exists(rawimage):
         print(f"Error: Raw image file not found at {rawimage}")
-        exit(1)
+        return
 
     # Ensure Loader.bin exists in the current directory
     loader_path = os.path.abspath("./Loader.bin")
     print(f"Loader path: {loader_path}")
     if not os.path.exists(loader_path):
         print(f"Error: Loader.bin not found at {loader_path}")
-        return()
+        return
 
-    # Use subprocess instead of os.system
-    command = f'copy /b "{loader_path}"+"{rawimage}" "MemeOs.bin"'
-    print(f"Executing: {command}")
+    # Use PowerShell command via subprocess
+    command = [
+        "powershell.exe", "-Command",
+        f'Get-Content "{loader_path}", "{rawimage}" -Encoding Byte | Set-Content "MemeOs.bin" -Encoding Byte'
+    ]
+    print(f"Executing: {' '.join(command)}")
     try:
-        result = subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
+        result = subprocess.run(command, check=True, text=True, capture_output=True)
         print(result.stdout)
-    except subprocess.CalledProcessError as e:
-        print(e.stdout)
-        print(f"Compilation failed with exit code {e.returncode}")
-    else:
         print("MemeOs.bin compiled successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"Compilation failed with exit code {e.returncode}")
+        print(f"Error output: {e.stderr}")
+    except FileNotFoundError:
+        print("Error: PowerShell not found. Ensure you're running on Windows with PowerShell installed.")
 
 def run_binary():
+    """Run a compiled binary in QEMU."""
     filetypesbin = [("Compiled Binary", "*.bin")]
 
     binary = filedialog.askopenfilename(filetypes=filetypesbin)
     if not binary:
         print("No binary file selected")
         return
-
-    import subprocess
     
     qemu_path = "C:\\Program Files\\qemu\\qemu-system-x86_64.exe"
     command = [qemu_path, "-drive", f"file={binary},format=raw", "-d", "int"]
     
     try:
         subprocess.run(command, check=True, shell=False)
+        print("Binary ran successfully in QEMU")
     except subprocess.CalledProcessError as e:
         print(f"Could not run. Error {e.returncode}")
     except FileNotFoundError:
-        print("Error: QEMU not found at specified path. Please ensure QEMU is installed at C:\\Program Files\\qemu\\")
+        print("Error: QEMU not found at specified path. Ensure QEMU is installed at C:\\Program Files\\qemu\\")
 
 # Create the main window
 app = customtkinter.CTk()
@@ -186,7 +189,8 @@ app.geometry("400x225")
 
 # Set the window icon using the temporary file
 icon_path = create_icon_file()
-app.iconbitmap(icon_path)
+if icon_path:
+    app.iconbitmap(icon_path)
 
 # Configure grid and add buttons
 app.grid_columnconfigure(0, weight=1)
@@ -196,14 +200,16 @@ button_convert.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 button_view = customtkinter.CTkButton(app, text="View RAW File", command=view_raw)
 button_view.grid(row=1, column=0, padx=20, pady=10, sticky="ew")
 
-button_view = customtkinter.CTkButton(app, text="Compile Image(s) + Source To Binary", command=compile_binary)
-button_view.grid(row=2, column=0, padx=20, pady=10, sticky="ew")
+button_compile = customtkinter.CTkButton(app, text="Compile Image(s) + Source To Binary", command=compile_binary)
+button_compile.grid(row=2, column=0, padx=20, pady=10, sticky="ew")
 
-button_view = customtkinter.CTkButton(app, text="Run Binary", command=run_binary)
-button_view.grid(row=3, column=0, padx=20, pady=10, sticky="ew")
+button_run = customtkinter.CTkButton(app, text="Run Binary", command=run_binary)
+button_run.grid(row=3, column=0, padx=20, pady=10, sticky="ew")
 
 # Start the application
 app.mainloop()
 
 # Clean up temporary file after app closes
-os.unlink(icon_path)
+if icon_path and os.path.exists(icon_path):
+    os.unlink(icon_path)
+    print("Temporary icon file deleted:", icon_path)
