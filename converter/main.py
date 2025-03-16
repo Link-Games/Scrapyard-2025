@@ -162,7 +162,7 @@ def compile_binary():
         return
     command = [
         "powershell.exe", "-Command",
-        f'Get-Content "{loader_path}", "{rawimage}" -Encoding Byte | Set-Content "MemeOs.bin" -Encoding Byte'
+        f'Get-Content "{loader_path}", "{rawimage}" -Encoding Byte | Set-Content "MemeOs.img" -Encoding Byte'
     ]
     print(f"Executing: {' '.join(command)}")
     try:
@@ -178,15 +178,14 @@ def compile_binary():
 # Define run_binary as a standalone function
 def run_binary(app):
     """Run a compiled binary in QEMU."""
-    filetypesbin = [("Compiled Binary", "*.bin")]
-    binary_path = os.path.abspath("./MemeOS.bin")
+    binary_path = os.path.abspath("./MemeOS.img")
     print(f"MemeOS path: {binary_path}")
     if not os.path.exists(binary_path):
-        print(f"Error: MemeOS.bin not found at {binary_path}")
+        print(f"Error: MemeOS.img not found at {binary_path}")
         PopupDialog(app, "Warning", f"Error: MemeOS.bin not found at {binary_path}")
         return
     qemu_path = "C:\\Program Files\\qemu\\qemu-system-x86_64.exe"
-    command = [qemu_path, "-drive", f"file={binary_path},format=raw", "-d", "int"]
+    command = [qemu_path, "-drive", f"file={binary_path},format=raw"]
     try:
         subprocess.run(command, check=True, shell=False)
         print("Binary ran successfully in QEMU")
@@ -213,10 +212,10 @@ button_convert.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 button_view = customtkinter.CTkButton(app, text="View RAW File", command=view_raw)
 button_view.grid(row=1, column=0, padx=20, pady=10, sticky="ew")
 
-button_compile = customtkinter.CTkButton(app, text="Compile Image(s) + Source To Binary", command=compile_binary)
+button_compile = customtkinter.CTkButton(app, text="Compile Image + Source To Image", command=compile_binary)
 button_compile.grid(row=2, column=0, padx=20, pady=10, sticky="ew")
 
-button_run = customtkinter.CTkButton(app, text="Run Binary", command=lambda: run_binary(app))
+button_run = customtkinter.CTkButton(app, text="Run MemeOS In QEMU", command=lambda: run_binary(app))
 button_run.grid(row=3, column=0, padx=20, pady=10, sticky="ew")
 
 # Start the application
