@@ -102,20 +102,32 @@ def view_raw():
         pygame.quit()
 
 def button_convert():
-    convertimage(open_png(), getsavelocationRAW())
+    """Convert multiple images to .raw format."""
+    input_paths = open_png_multiple()
+    if not input_paths:
+        return
+    
+    for input_path in input_paths:
+        # Suggest output filename based on input filename
+        initial_file = os.path.splitext(os.path.basename(input_path))[0] + ".raw"
+        save_path = getsavelocationRAW(initial_file)
+        if save_path:  # Only convert if a save path was selected
+            convertimage(input_path, save_path)
 
-def open_png():
+def open_png_multiple():
+    """Open multiple image files."""
     filetypes = [("Image Files", "*.png *.jpg")]
-    return filedialog.askopenfilename(filetypes=filetypes)
+    return filedialog.askopenfilenames(filetypes=filetypes)
 
-def getsavelocationRAW():
+def getsavelocationRAW(initial_file):
+    """Get save location for a single .raw file."""
     filetypes = [("RAW Files", "*.raw")]
-    return filedialog.asksaveasfilename(filetypes=filetypes)
+    return filedialog.asksaveasfilename(filetypes=filetypes, initialfile=initial_file)
 
 # Create the main window
 app = customtkinter.CTk()
 app.title("Image Downgrader")
-app.geometry("400x150")  # Increased height to accommodate second button
+app.geometry("400x150")
 
 # Set the window icon using the temporary file
 icon_path = create_icon_file()
@@ -123,7 +135,7 @@ app.iconbitmap(icon_path)
 
 # Configure grid and add buttons
 app.grid_columnconfigure(0, weight=1)
-button_convert = customtkinter.CTkButton(app, text="Convert Image", command=button_convert)
+button_convert = customtkinter.CTkButton(app, text="Convert Images", command=button_convert)
 button_convert.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 
 button_view = customtkinter.CTkButton(app, text="View RAW File", command=view_raw)
