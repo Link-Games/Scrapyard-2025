@@ -20,4 +20,4 @@ Press "Convert Images" to convert .png's an .jpg's to a custom .raw format.<br>
 Press "Compile Image + Source To Binary" and choose a .raw file to include with it<br>
 Optional: Press "Run MemeOS In QEMU" to run MemeOS in an emulator
 ## Run On Real Hardware
-Take MemeOS.img and burn it to a USB or DVD using [Rufus](https://rufus.ie/en/)
+Take MemeOS.img and burn it to a USB using [Rufus](https://rufus.ie/en/)
