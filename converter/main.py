@@ -150,14 +150,63 @@ def getsavelocationRAW(initial_file):
     filetypes = [("RAW Files", "*.raw")]
     return filedialog.asksaveasfilename(filetypes=filetypes, initialfile=initial_file)
 
-def compile_iso():
+def compile_binary():
     print("GO AWAy!!!! NOT IMPLEMENtED YETTTT")
-    os.system("echo a")
+    import os
+    from tkinter import filedialog
+
+    # Define file type filters
+    filetypesasm = [("Bootloader source", "*.asm *.s")]
+    filetypesraw = [("Raw image", "*.raw")]
+
+    # Get bootloader file
+    bootloader = filedialog.askopenfilename(filetypes=filetypesasm)
+    if not bootloader:
+        print("No bootloader file selected")
+        exit(1)
+
+    # Get raw image file
+    rawimage = filedialog.askopenfilename(filetypes=filetypesraw)
+    if not rawimage:
+        print("No raw image file selected")
+        exit(1)
+
+    # Compile the bootloader with proper spacing and error checking
+    command = f"nasm -f bin \"{bootloader}\" -o Loader.bin"
+    result = os.system(command)
+
+    command = f"copy /b Loader.bin+\"{rawimage}\" MemeOs.bin"
+    result = os.system(command)
+
+    if result != 0:
+        print(f"Compilation failed with exit code {result}")
+    else:
+        print("Bootloader compiled successfully")
+
+def run_binary():
+    filetypesbin = [("Compiled Binary", "*.bin")]
+
+    binary = filedialog.askopenfilename(filetypes=filetypesbin)
+    if not binary:
+        print("No binary file selected")
+        return
+
+    import subprocess
+    
+    qemu_path = "C:\\Program Files\\qemu\\qemu-system-x86_64.exe"
+    command = [qemu_path, "-drive", f"file={binary},format=raw", "-d", "int"]
+    
+    try:
+        subprocess.run(command, check=True, shell=False)
+    except subprocess.CalledProcessError as e:
+        print(f"Could not run. Error {e.returncode}")
+    except FileNotFoundError:
+        print("Error: QEMU not found at specified path. Please ensure QEMU is installed at C:\\Program Files\\qemu\\")
 
 # Create the main window
 app = customtkinter.CTk()
 app.title("Image Downgrader")
-app.geometry("400x175")
+app.geometry("400x225")
 
 # Set the window icon using the temporary file
 icon_path = create_icon_file()
@@ -171,8 +220,11 @@ button_convert.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 button_view = customtkinter.CTkButton(app, text="View RAW File", command=view_raw)
 button_view.grid(row=1, column=0, padx=20, pady=10, sticky="ew")
 
-button_view = customtkinter.CTkButton(app, text="Compile Image(s) to .iso", command=compile_iso)
+button_view = customtkinter.CTkButton(app, text="Compile Image(s) + Source To Binary", command=compile_binary)
 button_view.grid(row=2, column=0, padx=20, pady=10, sticky="ew")
+
+button_view = customtkinter.CTkButton(app, text="Run Binary", command=run_binary)
+button_view.grid(row=3, column=0, padx=20, pady=10, sticky="ew")
 
 # Start the application
 app.mainloop()
