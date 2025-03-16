@@ -126,7 +126,7 @@ def getsavelocationRAW(initial_file):
 
 def compile_iso():
     print("GO AWAy!!!! NOT IMPLEMENtED YETTTT")
-    os.system('dir c:\\')
+    os.system("echo a")
 
 # Create the main window
 app = customtkinter.CTk()
