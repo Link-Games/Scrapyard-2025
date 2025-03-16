@@ -3,7 +3,8 @@ import numpy as np
 import os
 from tkinter import filedialog
 from palette import VGA_PALETTE
-from main import create_icon_file, ICON_BASE64  # Assuming these are defined in main.py
+from main import create_icon_file
+from icon_base64 import ICON_BASE64
 
 # Initialize Pygame
 pygame.init()
