@@ -14,9 +14,6 @@ nasm 2.16.03<br>
 QEMU<br>
 [QEMU Downloads](https://www.qemu.org/download/)<br>
 #### Run:<br>
-QEMU<br>
-[QEMU Downloads](https://www.qemu.org/download/)<br>
-### How to run:<br>
 `python converter/main.py`<br>
 Press "Convert Images" to convert .png's an .jpg's to a custom .raw format.<br>
 Press "Compile Image + Source To Binary" and choose a .raw file to include with it<br>
