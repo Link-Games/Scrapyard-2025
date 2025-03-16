@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import filedialog
 import os
 from converter import convertimage
+from converter import png_to_vga_raw
 
 popup = None
 textbox = None
@@ -46,14 +47,23 @@ def on_popup_close_with_text():
         textbox = text_content
 
 def button_convert():
-    convertimage(open_file(), getsavelocation())
+    convertimage(open_png(), getsavelocationRAW())
+    #png_to_vga_raw(open_bmp(), getsavelocationRAW())
 
-def open_file():
+def open_png():
     filetypes = [("Image Files", "*.png *.jpg")]
     return filedialog.askopenfilename(filetypes=filetypes)
 
-def getsavelocation():
-    filetypes = [("Bitmap File", "*.bmp")]
+def open_bmp():
+    filetypes = [("Bitmap Files", "*.bmp")]
+    return filedialog.askopenfilename(filetypes=filetypes)
+
+def getsavelocationBMP():
+    filetypes = [("Bitmap Files", "*.bmp")]
+    return filedialog.asksaveasfilename(filetypes=filetypes)
+
+def getsavelocationRAW():
+    filetypes = [("RAW Files", "*.raw")]
     return filedialog.asksaveasfilename(filetypes=filetypes)
 
 # Create the main window
