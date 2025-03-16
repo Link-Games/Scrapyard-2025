@@ -2,13 +2,13 @@ import customtkinter
 import tkinter
 from tkinter import filedialog
 import os
-from converter import convertimage, png_to_vga_raw  # Assuming these are in converter.py
+from converter import convertimage, png_to_vga_raw 
 import pygame
 import numpy as np
 import base64
 import tempfile
 from icon_base64 import ICON_BASE64
-from palette import VGA_PALETTE  # Import from palette.py
+from palette import VGA_PALETTE
 
 # Window dimensions for viewer
 WIDTH, HEIGHT = 320, 200
