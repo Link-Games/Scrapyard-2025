@@ -1,3 +1,5 @@
+![Untitled](https://github.com/user-attachments/assets/cb173c57-770d-465b-a3b5-d93a22ece17c)
+
 # Scrapyard-2025<br>
 This is an OS that makes your computer completely useless. All it does is show images (preferably memes) you downscaled to 320x200 @ 8bpp beforehand using the converter program.
 ## Converter
@@ -12,9 +14,6 @@ nasm 2.16.03<br>
 QEMU<br>
 [QEMU Downloads](https://www.qemu.org/download/)<br>
 #### Run:<br>
-QEMU<br>
-[QEMU Downloads](https://www.qemu.org/download/)<br>
-### How to run:<br>
 `python converter/main.py`<br>
 Press "Convert Images" to convert .png's an .jpg's to a custom .raw format.<br>
 Press "Compile Image + Source To Binary" and choose a .raw file to include with it<br>
