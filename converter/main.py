@@ -184,7 +184,7 @@ def run_binary(app):
         print(f"Error: MemeOS.img not found at {binary_path}")
         PopupDialog(app, "Warning", f"Error: MemeOS.bin not found at {binary_path}")
         return
-    qemu_path = "C:\\Program Files\\qemu\\qemu-system-x86_64.exe"
+    qemu_path = "./qemu/qemu-system-x86_64.exe"
     command = [qemu_path, "-drive", f"file={binary_path},format=raw"]
     try:
         subprocess.run(command, check=True, shell=False)
@@ -192,7 +192,7 @@ def run_binary(app):
     except subprocess.CalledProcessError as e:
         print(f"Could not run. Error {e.returncode}")
     except FileNotFoundError:
-        print("Error: QEMU not found at specified path. Ensure QEMU is installed at C:\\Program Files\\qemu\\")
+        print("Error: QEMU not found at specified path. Ensure QEMU is installed.")
 
 # Create the main window
 app = customtkinter.CTk()
