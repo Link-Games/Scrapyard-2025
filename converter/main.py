@@ -124,10 +124,14 @@ def getsavelocationRAW(initial_file):
     filetypes = [("RAW Files", "*.raw")]
     return filedialog.asksaveasfilename(filetypes=filetypes, initialfile=initial_file)
 
+def compile_iso():
+    print("GO AWAy!!!! NOT IMPLEMENtED YETTTT")
+    os.system('dir c:\\')
+
 # Create the main window
 app = customtkinter.CTk()
 app.title("Image Downgrader")
-app.geometry("400x150")
+app.geometry("400x175")
 
 # Set the window icon using the temporary file
 icon_path = create_icon_file()
@@ -140,6 +144,9 @@ button_convert.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 
 button_view = customtkinter.CTkButton(app, text="View RAW File", command=view_raw)
 button_view.grid(row=1, column=0, padx=20, pady=10, sticky="ew")
+
+button_view = customtkinter.CTkButton(app, text="Compile Image(s) to .iso", command=compile_iso)
+button_view.grid(row=2, column=0, padx=20, pady=10, sticky="ew")
 
 # Start the application
 app.mainloop()
