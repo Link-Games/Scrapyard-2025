@@ -1,16 +1,14 @@
 import customtkinter
 import tkinter
-from tkinter import ttk
 from tkinter import filedialog
 import os
-from converter import convertimage
-from converter import png_to_vga_raw
+from converter import convertimage, png_to_vga_raw  # Assuming these are in converter.py
 import pygame
 import numpy as np
 import base64
 import tempfile
 from icon_base64 import ICON_BASE64
-from palette import VGA_PALETTE
+from palette import VGA_PALETTE  # Import from palette.py
 
 # Window dimensions for viewer
 WIDTH, HEIGHT = 320, 200
@@ -66,17 +64,15 @@ def load_raw_image(filepath, width=320, height=200):
             rgb_array[y, x] = VGA_PALETTE[indices[y, x]]
     
     surface = pygame.surfarray.make_surface(rgb_array)
-    if SCALE > 1:
-        surface = pygame.transform.scale(surface, (WINDOW_WIDTH, WINDOW_HEIGHT))
-    return surface
+    return surface  # Return unscaled surface; scale in view_raw if needed
 
 def view_raw():
-    """Open a .raw file in the viewer."""
+    """Open a .raw file in the viewer in fullscreen."""
     filetypes = [("RAW Files", "*.raw")]
     raw_file_path = filedialog.askopenfilename(filetypes=filetypes)
     if raw_file_path:
         pygame.init()
-        screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         pygame.display.set_caption("8bpp VGA Image Viewer")
         
         image_surface = load_raw_image(raw_file_path)
@@ -91,11 +87,13 @@ def view_raw():
             
             screen.fill((50, 50, 50))
             if image_surface:
-                screen.blit(image_surface, (0, 0))
+                screen_width, screen_height = screen.get_size()
+                scaled_image = pygame.transform.scale(image_surface, (screen_width, screen_height))
+                screen.blit(scaled_image, (0, 0))
             else:
                 font = pygame.font.SysFont(None, 36)
                 text = font.render("Failed to load image. Check console.", True, (255, 0, 0))
-                screen.blit(text, (10, WINDOW_HEIGHT // 2 - 18))
+                screen.blit(text, (10, screen_height // 2 - 18))
             
             pygame.display.flip()
             clock.tick(60)
