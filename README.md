@@ -1,3 +1,5 @@
+![Untitled](https://github.com/user-attachments/assets/cb173c57-770d-465b-a3b5-d93a22ece17c)
+
 # Scrapyard-2025<br>
 This is an OS that makes your computer completely useless. All it does is show images (preferably memes) you downscaled to 320x200 @ 8bpp beforehand using the converter program.
 ## Converter
