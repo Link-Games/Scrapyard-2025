@@ -147,7 +147,7 @@ def compile_binary():
     print(f"Loader path: {loader_path}")
     if not os.path.exists(loader_path):
         print(f"Error: Loader.bin not found at {loader_path}")
-        exit(1)
+        return()
 
     # Use subprocess instead of os.system
     command = f'copy /b "{loader_path}"+"{rawimage}" "MemeOs.bin"'
