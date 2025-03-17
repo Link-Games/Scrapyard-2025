@@ -13,11 +13,11 @@ nasm 2.16.03<br>
 [Nasm Downloads](https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/)<br>
 QEMU<br>
 [QEMU Downloads](https://www.qemu.org/download/)<br>
-#### Run:<br>
+#### Run: (Video Tutorial)[https://youtu.be/9WA77e_jNv0] <br>
 `python converter/main.py`<br>
 Press "Convert Images" to convert .png's an .jpg's to a custom .raw format.<br>
-Press "Compile Image + Source To Binary" and choose a .raw file to include with it<br>
-Optional: Press "Run MemeOS In QEMU" to run MemeOS in an emulator
+Press "Compile Image + Source To Binary" and choose a .raw file to include with it. It will give you MemOS.img This file is the image that you would put on the OS or run in the emulator.<br>
+Optional: Press "Run MemeOS In QEMU" to run MemeOS in an emulator with your newly compiled .img file.<br>
 ## Run On Real Hardware
 Take MemeOS.img and burn it to a USB using [Rufus](https://rufus.ie/en/)
 
