@@ -20,14 +20,15 @@ Press "Compile Image + Source To Binary" and choose a .raw file to include with 
 Optional: Press "Run MemeOS In QEMU" to run MemeOS in an emulator with your newly compiled .img file.<br>
 ## Run On Real Hardware
 Take MemeOS.img and burn it to a USB using [Rufus](https://rufus.ie/en/)<br>
-1. Choose your device
-2. Press the "Select" button and choose MemeOS.img (it is where you downloaded MemeOS)
-3. Press "Start". WARNING!!! IT WILL ERASE YOUR DRIVE!!!!
-4. Reboot your computer and get in the BIOS.
-5. Turn on legacy boot
-6. Change boot order to boot off the USB.
-7. Save and exit BIOS.
-8. When you are done, make sure to turn UEFI boot back on.
+1. Download and open Rufus
+2. Choose your device
+3. Press the "Select" button and choose MemeOS.img (it is where you downloaded MemeOS)
+4. Press "Start". WARNING!!! IT WILL ERASE YOUR DRIVE!!!!
+5. Reboot your computer and get in the BIOS.
+6. Turn on legacy boot7
+7. Change boot order to boot off the USB.
+8. Save and exit BIOS.
+9. When you are done, make sure to turn UEFI boot back on.
 
 # Credits  
 Benjamin Zdunich  
